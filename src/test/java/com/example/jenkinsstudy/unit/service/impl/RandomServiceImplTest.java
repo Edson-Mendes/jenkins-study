@@ -1,5 +1,6 @@
-package com.example.jenkinsstudy.service.impl;
+package com.example.jenkinsstudy.unit.service.impl;
 
+import com.example.jenkinsstudy.service.impl.RandomServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class RandomServiceImplTest {
 
     Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
         .isThrownBy(() -> randomService.generateRandomNumber(origin, bound))
-        .withMessage("bound must be greater than origin");
+        .withMessage("bound must be greater than originn");
   }
 
 }
