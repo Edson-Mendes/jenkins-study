@@ -6,19 +6,23 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('test') {
+        stage('unit test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test -P unit-tests'
             }
             post {
                 always {
-                    sh 'echo stage test finished'
+                    sh 'echo unit test stage finished'
                 }
-                success {
-                    echo "SUCESSO!!!!"
-                }
-                failure {
-                    echo "Falha na execução de testes"
+            }
+        }
+        stage('integration test') {
+            steps {
+                sh 'mvn test -P integration-tests'
+            }
+            post {
+                always {
+                    sh 'echo integration test stage finished'
                 }
             }
         }
