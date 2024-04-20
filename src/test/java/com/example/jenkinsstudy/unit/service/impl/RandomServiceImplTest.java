@@ -35,7 +35,7 @@ class RandomServiceImplTest {
 
     Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
         .isThrownBy(() -> randomService.generateRandomNumber(origin, bound))
-        .withMessage("bound must be greater than originn");
+        .withMessage("bound must be greater than origin");
   }
 
 }
