@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
+        stage('package') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
@@ -23,6 +23,19 @@ pipeline {
             post {
                 always {
                     sh 'echo integration test stage finished'
+                }
+            }
+        }
+        stage('build image') {
+            steps {
+                sh 'docker --version'
+            }
+            post {
+                success {
+                    sh 'executou docker com sucesso!!!'
+                }
+                failure {
+                    sh 'falhou em executar o docker!!!'
                 }
             }
         }
