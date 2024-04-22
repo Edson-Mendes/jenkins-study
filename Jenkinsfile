@@ -28,14 +28,14 @@ pipeline {
         }
         stage('build image') {
             steps {
-                sh 'docker --version'
+                sh 'docker build -t edsonmendes/jenkins-study .'
             }
             post {
                 success {
-                    sh 'executou docker com sucesso!!!'
+                    sh 'echo executou docker com sucesso!!!'
                 }
                 failure {
-                    sh 'falhou em executar o docker!!!'
+                    sh 'echo falhou em executar o docker!!!'
                 }
             }
         }
