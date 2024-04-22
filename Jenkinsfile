@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('package') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
         stage('unit test') {
             steps {
                 sh 'mvn test -P unit-tests'
@@ -26,9 +21,18 @@ pipeline {
                 }
             }
         }
-        stage('build image') {
+        stage('package') {
             steps {
-                sh 'docker build -t edsonmendes/jenkins-study .'
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('build image') {
+            environment {
+                IMAGE_VERSION = sh "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2"
+            }
+            steps {
+//                 sh 'docker build -t edsonmendes/jenkins-study .'
+                   sh 'echo $IMAGE_VERSION'
             }
             post {
                 success {
