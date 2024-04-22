@@ -3,10 +3,7 @@ pipeline {
     stages {
         stage('package') {
             steps {
-                sh 'dir'
                 sh 'mvn -B -DskipTests clean package'
-                sh 'cd target'
-                sh 'dir'
             }
         }
         stage('unit test') {
