@@ -28,7 +28,7 @@ pipeline {
         }
         stage('build image') {
             environment {
-                IMAGE_VERSION = sh "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2"
+                IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
             }
             steps {
 //                 sh 'docker build -t edsonmendes/jenkins-study .'
