@@ -31,10 +31,10 @@ pipeline {
         }
         stage('build image') {
             environment {
-                IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
+                env.IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
             }
             steps {
-                sh 'docker build -t edsonmendes/jenkins-study:$IMAGE_VERSION -t edsonmendes/jenkins-study .'
+                sh 'docker build -t edsonmendes/jenkins-study:${env.IMAGE_VERSION} -t edsonmendes/jenkins-study .'
             }
             post {
                 success {
@@ -63,7 +63,7 @@ pipeline {
                 DOCKERHUB_CREDENTIALS = credentials('edsonmendes-dockerhub')
             }
             steps {
-                sh 'docker push edsonmendes/jenkins-study:$IMAGE_VERSION'
+                sh 'docker push edsonmendes/jenkins-study:${env.IMAGE_VERSION}'
                 sh 'docker push edsonmendes/jenkins-study:latest'
             }
             post {
