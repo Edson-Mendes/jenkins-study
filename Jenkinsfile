@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        IMAGE_VERSION = 'X.X.X'
-    }
     stages {
         stage('unit test') {
             steps {
@@ -31,10 +28,10 @@ pipeline {
         }
         stage('build image') {
             environment {
-                env.IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
+                IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
             }
             steps {
-                sh 'docker build -t edsonmendes/jenkins-study:${env.IMAGE_VERSION} -t edsonmendes/jenkins-study .'
+                sh 'docker build -t edsonmendes/jenkins-study:${IMAGE_VERSION} -t edsonmendes/jenkins-study .'
             }
             post {
                 success {
@@ -60,10 +57,10 @@ pipeline {
         }
         stage('push image') {
             environment {
-                DOCKERHUB_CREDENTIALS = credentials('edsonmendes-dockerhub')
+                IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
             }
             steps {
-                sh 'docker push edsonmendes/jenkins-study:${env.IMAGE_VERSION}'
+                sh 'docker push edsonmendes/jenkins-study:${IMAGE_VERSION}'
                 sh 'docker push edsonmendes/jenkins-study:latest'
             }
             post {
