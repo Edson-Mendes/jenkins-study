@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        IMAGE_VERSION = 'X.X.X'
+    }
     stages {
         stage('unit test') {
             steps {
@@ -35,10 +38,40 @@ pipeline {
             }
             post {
                 success {
-                    sh 'echo executou docker com sucesso!!!'
+                    sh 'echo build image com sucesso!!!'
                 }
                 failure {
-                    sh 'echo falhou em executar o docker!!!'
+                    sh 'echo falhou em build image!!!'
+                }
+            }
+        }
+        stage('login dockerhub') {
+            environment {
+                DOCKERHUB_CREDENTIALS = credentials('edsonmendes-dockerhub')
+            }
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+            post {
+                failure {
+                    sh 'echo falhou em logar no docker!!!'
+                }
+            }
+        }
+        stage('push image') {
+            environment {
+                DOCKERHUB_CREDENTIALS = credentials('edsonmendes-dockerhub')
+            }
+            steps {
+                sh 'docker push edsonmendes/jenkins-study:$IMAGE_VERSION'
+                sh 'docker push edsonmendes/jenkins-study:latest'
+            }
+            post {
+                always {
+                    sh 'docker logout'
+                }
+                failure {
+                    sh 'echo falhou em enviar imagem para docker hub!!'
                 }
             }
         }
