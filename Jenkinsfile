@@ -31,8 +31,7 @@ pipeline {
                 IMAGE_VERSION = sh (returnStdout: true, script: "grep '^version=' ./target/maven-archiver/pom.properties | cut -d '=' -f 2")
             }
             steps {
-//                 sh 'docker build -t edsonmendes/jenkins-study .'
-                   sh 'echo $IMAGE_VERSION'
+                sh 'docker build -t edsonmendes/jenkins-study:$IMAGE_VERSION -t edsonmendes/jenkins-study .'
             }
             post {
                 success {
